@@ -28,5 +28,8 @@ public class ControllerInputHandler : MonoBehaviour
         inputV.y = inputY;
 
         m_player.SetInputVector(inputV);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+            m_player.Attack();
     }
 }
