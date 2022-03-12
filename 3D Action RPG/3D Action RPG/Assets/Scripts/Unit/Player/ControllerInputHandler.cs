@@ -16,10 +16,17 @@ public class ControllerInputHandler : MonoBehaviour
     void Update()
     {
         Vector2 inputV = Vector2.zero;
+        var inputX = Input.GetAxis("Horizontal");
+        var inputY = Input.GetAxis("Vertical");
 
-        inputV.x = Input.GetAxis("Horizontal");
-        inputV.y = Input.GetAxis("Vertical");
+        if (inputX > 0f)
+            inputV.x = 1f;
+        else if (inputX < 0f)
+            inputV.x = -1f;
+        else
+            inputV.x = 0f;
+        inputV.y = inputY;
 
-        m_player.SetInputVector(inputV.y);
+        m_player.SetInputVector(inputV);
     }
 }
