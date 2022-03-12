@@ -17,10 +17,17 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private UnitSpawner m_UnitSpawner;
 
-    // Start is called before the first frame update
     void Awake()
     {
         _instance = this;
+    }
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        var cameraScript = Camera.main.GetComponent<CameraController>();
+
+        // cameraScript.SetTarget(); setup player & show start button
     }
 
     // Update is called once per frame
