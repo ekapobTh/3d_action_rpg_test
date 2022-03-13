@@ -15,21 +15,23 @@ public class ControllerInputHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        UpdateInput();
+    }
+
+    private void UpdateInput()
+    {
         Vector2 inputV = Vector2.zero;
         var inputX = Input.GetAxis("Horizontal");
         var inputY = Input.GetAxis("Vertical");
 
-        if (inputX > 0f)
-            inputV.x = 1f;
-        else if (inputX < 0f)
-            inputV.x = -1f;
-        else
-            inputV.x = 0f;
+        inputV.x = inputX;
         inputV.y = inputY;
 
         m_player.SetInputVector(inputV);
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Mouse0))
             m_player.Attack();
+        else if (Input.GetKeyDown(KeyCode.Mouse1))
+            m_player.Parry();
     }
 }

@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
     {
         var cameraScript = Camera.main.GetComponent<CameraController>();
 
+        Cursor.visible = false;
         // cameraScript.SetTarget(); setup player & show start button
     }
 
