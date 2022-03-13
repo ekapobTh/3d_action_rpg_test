@@ -34,4 +34,9 @@ public class Player : UnitBase
     {
         _isParry = true;
     }
+
+    public void ClearState()
+    {
+        _isParry = false;
+    }
 }

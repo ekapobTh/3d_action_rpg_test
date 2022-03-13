@@ -673,7 +673,7 @@ MonoBehaviour:
   _mouseSensitivity: 3
   isReverse: 0
   _distanceFromTarget: 5
-  _smoothTime: 0.2
+  _smoothTime: 0.1
   _rotationMinMax: {x: -90, y: 90}
 --- !u!1 &1157555260
 GameObject:
