@@ -33,5 +33,10 @@ public class ControllerInputHandler : MonoBehaviour
             m_player.Attack();
         else if (Input.GetKeyDown(KeyCode.Mouse1))
             m_player.Parry();
+
+        if (Input.GetKeyUp(KeyCode.Mouse0))
+            m_player.UnAttack();
+        if (Input.GetKeyUp(KeyCode.Mouse1))
+            m_player.UnParry();
     }
 }

@@ -18,12 +18,17 @@ public class UnitBase : MonoBehaviour, IUnit
     #endregion
 
     #region Animation Parameter
-    private const string ATTACK_TRIGGER = "Attack";
-    private const string PARRY_TRIGGER = "Parry";
-    private const string DAMAGE_TRIGGER = "Damage";
+    protected const string ATTACK_TRIGGER = "Attack";
+    protected const string PARRY_TRIGGER = "Parry";
+    protected const string DAMAGE_TRIGGER = "Damage";
 
-    private const string ATTACK = "isAttack";
-    private const string PARRY = "isParry";
+    protected const string ATTACK = "isAttack";
+    protected const string PARRY = "isParry";
+    #endregion
+
+    #region Constant
+    protected const int UNIT_MAX_HP = 100;
+    protected const int UNIT_ATTACK_DAMAGE = 10;
     #endregion
 
     protected bool isDamaged;
@@ -41,22 +46,35 @@ public class UnitBase : MonoBehaviour, IUnit
         isAttack = false;
         isDeath = false;
 
-        unitHP = UnitBaseValue.UNIT_MAX_HP;
-        unitATK = UnitBaseValue.UNIT_ATTACK_DAMAGE;
+        unitHP = UNIT_MAX_HP;
+        unitATK = UNIT_ATTACK_DAMAGE;
     }
 
     public void Attack()
     {
-        if (isUnableToAction(isParry || isDeath))
+        if (isUnableToAction(isParry))
             return;
-        throw new NotImplementedException();
+        m_Animator.SetTrigger(ATTACK_TRIGGER);
+        m_Animator.SetBool(ATTACK, true);
+        // TODO attack cooldown 1 sec
+    }
+
+    public void UnAttack()
+    {
+        m_Animator.SetBool(ATTACK, false);
     }
 
     public void Parry()
     {
-        if (isUnableToAction(isAttack || isDeath))
+        if (isUnableToAction(isAttack))
             return;
-        throw new NotImplementedException();
+        m_Animator.SetTrigger(PARRY_TRIGGER);
+        m_Animator.SetBool(PARRY, true);
+    }
+
+    public void UnParry()
+    {
+        m_Animator.SetBool(PARRY, false);
     }
 
     public void Death()
@@ -66,12 +84,12 @@ public class UnitBase : MonoBehaviour, IUnit
 
     public void Hurt()
     {
-        if (isUnableToAction(isDeath))
+        if (isUnableToAction())
             return;
         throw new NotImplementedException();
     }
 
-    protected virtual bool isUnableToAction(bool elseCondition = false) => isDamaged || elseCondition;
+    protected virtual bool isUnableToAction(bool elseCondition = false) => isDamaged || isDeath || elseCondition;
 
     public void SetInputVector(Vector2 inputV)
     {
