@@ -669,6 +669,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a26cba8e6fd20e4681a4f3339fcf9f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _target: {fileID: 0}
+  _mouseSensitivity: 3
+  isReverse: 0
+  _distanceFromTarget: 5
+  _smoothTime: 0.2
+  _rotationMinMax: {x: -90, y: 90}
 --- !u!1 &1157555260
 GameObject:
   m_ObjectHideFlags: 0
