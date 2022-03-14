@@ -10,7 +10,8 @@ public class Enemy : UnitBase
     private float offsetRange = 10f;
     private bool _isOutOfSafeArea = false;
 
-    public float turnValue = 0.5f;
+    private float turnValue = 0.5f;
+    private float moveValue = 0.25f;
 
     protected override void Awake()
     {
@@ -28,26 +29,52 @@ public class Enemy : UnitBase
             StayInSafeArea();
     }
 
-    public void SetTarget(Transform t) => target = t;
+    public void SetTarget(Transform t)
+    {
+        Debug.Log($"{name} : {(t != null ? t.name : "null")}");
+        target = t;
+    }
 
+    private float walkVisionOffset = 2.5f;
+    private float stopTurnOffset = 1.5f;
     private void MoveToTarget()
     {
+        FaceToTarget();
+
         Vector3 localPos = transform.InverseTransformPoint(target.transform.position);
+        if (localPos.x >= -walkVisionOffset && localPos.x <= walkVisionOffset)
+            SetInputVectorY(moveValue);
+        else
+            SetInputVectorY(0f);
 
-        //transform.rotation = Quaternion.Lerp(transform.rotation, rotationAngle, Time.deltaTime * 2f); 
-
-        if (localPos.x < -0.15f) // left
-           SetInputVectorX(-turnValue);
-        else if (localPos.x > 0.15f) // right
-            SetInputVectorX(turnValue);
-        else // center
-        {
-            SetInputVectorX(0);
-        }
-        //Debug.Log($"MoveToTarget {angle} {angleAxis}");
-        // move to target if move out of spawn range back to original poistion
+        // TODO if move out of spawn range back to original poistion
         if (IsOutOfAreaOffset())
+        {
+            SetInputVectorY(0f);
             SetTarget(null);
+        }
+    }
+
+    private void FaceToTarget()
+    {
+        switch (transform.GetTargetSide(target.transform, stopTurnOffset))
+        {
+            case LRC.Left:
+                {
+                    SetInputVectorX(-turnValue);
+                }
+                break;
+            case LRC.Right:
+                {
+                    SetInputVectorX(turnValue);
+                }
+                break;
+            default:
+                {
+                    SetInputVectorX(0);
+                }
+                break;
+        }
     }
     
     private void StayInSafeArea()

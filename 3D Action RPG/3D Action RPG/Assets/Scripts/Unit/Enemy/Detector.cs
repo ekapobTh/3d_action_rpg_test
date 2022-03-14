@@ -5,16 +5,27 @@ using UnityEngine;
 public class Detector : MonoBehaviour
 {
     [SerializeField] private Enemy m_Enemy;
+    private bool _isDetected = false;
 
     private void OnTriggerEnter(Collider other)
     {
+        if (_isDetected)
+            return;
         if (other.tag.Equals(UnitTag.PLAYER))
+        {
             m_Enemy.SetTarget(other.transform);
+            _isDetected = true;
+        }
     }
 
     private void OnTriggerExit(Collider other)
     {
+        if(!_isDetected)
+            return;
         if (other.tag.Equals(UnitTag.PLAYER))
+        {
             m_Enemy.SetTarget(null);
+            _isDetected = false;
+        }
     }
 }

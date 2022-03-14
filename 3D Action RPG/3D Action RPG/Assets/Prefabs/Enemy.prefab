@@ -70,7 +70,6 @@ GameObject:
   - component: {fileID: 3393252589792539022}
   - component: {fileID: 3393252589792539021}
   - component: {fileID: 3393252589792539020}
-  - component: {fileID: 3393252589792539011}
   - component: {fileID: 147175851724419507}
   m_Layer: 0
   m_Name: Body
@@ -142,20 +141,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &3393252589792539011
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3393252589792539010}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!95 &147175851724419507
 Animator:
   serializedVersion: 3
@@ -186,6 +171,7 @@ GameObject:
   - component: {fileID: 3393252590814879409}
   - component: {fileID: 1586103943365380110}
   - component: {fileID: 8315364386937701792}
+  - component: {fileID: 1932882946535911626}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -221,7 +207,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643e51e6ae4c4cf42ae378bb28fa96b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offsetRange: 5
+  m_Animator: {fileID: 147175851724419507}
 --- !u!54 &8315364386937701792
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -238,6 +224,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
+--- !u!136 &1932882946535911626
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3393252590814879408}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2.5
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &5589392424978246368
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,7 +249,6 @@ GameObject:
   - component: {fileID: 2927624096794135318}
   - component: {fileID: 1481557484979926453}
   - component: {fileID: 8510053064035777666}
-  - component: {fileID: 7625058946896211829}
   m_Layer: 0
   m_Name: Cylinder
   m_TagString: Untagged
@@ -318,25 +317,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!95 &7625058946896211829
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5589392424978246368}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 22100000, guid: c74b4849840a9584aa7e84dd53731bee, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8040187565838796514
 GameObject:
   m_ObjectHideFlags: 0
