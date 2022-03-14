@@ -25,6 +25,8 @@ public class UnitBase : MonoBehaviour, IUnit
 
     protected const string ATTACK = "isAttack";
     protected const string PARRY = "isParry";
+
+    protected const string MOVE = "Move";
     #endregion
 
     #region Constant
@@ -91,6 +93,11 @@ public class UnitBase : MonoBehaviour, IUnit
         throw new NotImplementedException();
     }
 
+    public void MoveUpdate()
+    {
+        m_Animator.SetFloat(MOVE, moveInput);
+    }
+
     protected virtual bool isUnableToAction(bool elseCondition = false) => isDamaged || isDeath || elseCondition;
 
     public void SetInputVector(Vector2 inputV)
@@ -99,7 +106,11 @@ public class UnitBase : MonoBehaviour, IUnit
         SetInputVectorY(inputV.y);
     }
     public void SetInputVectorX(float inputX) => turnInput = inputX;
-    public void SetInputVectorY(float inputY) => moveInput = inputY;
+    public void SetInputVectorY(float inputY)
+    {
+        moveInput = inputY;
+        MoveUpdate();
+    }
 
 
     private void Rotate()
@@ -107,7 +118,7 @@ public class UnitBase : MonoBehaviour, IUnit
         transform.Rotate(Vector3.up, turnInput * turnSpeed * Time.deltaTime);
     }
 
-    private void Move()
+    private void Movement()
     {
         transform.Translate(Vector3.forward * moveInput * moveSpeed * Time.deltaTime);
     }
@@ -117,7 +128,7 @@ public class UnitBase : MonoBehaviour, IUnit
     {
         Rotate();
 
-        Move();
+        Movement();
     }
 
 
