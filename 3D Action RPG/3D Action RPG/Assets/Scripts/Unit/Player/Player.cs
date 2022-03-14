@@ -21,4 +21,9 @@ public class Player : UnitBase
     {
         isParry = false;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        //Debug.Log(other.name);
+    }
 }

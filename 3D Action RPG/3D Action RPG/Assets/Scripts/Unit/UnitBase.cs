@@ -21,6 +21,7 @@ public class UnitBase : MonoBehaviour, IUnit
     protected const string ATTACK_TRIGGER = "Attack";
     protected const string PARRY_TRIGGER = "Parry";
     protected const string DAMAGE_TRIGGER = "Damage";
+    protected const string DEATH_TRIGGER = "Damage";
 
     protected const string ATTACK = "isAttack";
     protected const string PARRY = "isParry";
@@ -79,7 +80,8 @@ public class UnitBase : MonoBehaviour, IUnit
 
     public void Death()
     {
-        throw new NotImplementedException();
+        m_Animator.SetTrigger(DEATH_TRIGGER);
+        isDeath = true;
     }
 
     public void Hurt()

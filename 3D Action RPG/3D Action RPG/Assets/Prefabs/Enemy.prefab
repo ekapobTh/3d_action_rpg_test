@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4955097975309247366}
   - component: {fileID: 7353040340653173470}
+  - component: {fileID: 4723602322814266315}
   m_Layer: 0
   m_Name: Vision
   m_TagString: Untagged
@@ -39,12 +40,25 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1558336034709386477}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   m_Radius: 10
   m_Height: 30
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4723602322814266315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1558336034709386477}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d372cdd2c9843874ebaf58a8d10cbc7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Enemy: {fileID: 1586103943365380110}
 --- !u!1 &3393252589792539010
 GameObject:
   m_ObjectHideFlags: 0
@@ -171,9 +185,10 @@ GameObject:
   m_Component:
   - component: {fileID: 3393252590814879409}
   - component: {fileID: 1586103943365380110}
+  - component: {fileID: 8315364386937701792}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -206,6 +221,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 643e51e6ae4c4cf42ae378bb28fa96b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  offsetRange: 5
+--- !u!54 &8315364386937701792
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3393252590814879408}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 116
+  m_CollisionDetection: 0
 --- !u!1 &5589392424978246368
 GameObject:
   m_ObjectHideFlags: 0
@@ -217,7 +249,6 @@ GameObject:
   - component: {fileID: 2927624096794135318}
   - component: {fileID: 1481557484979926453}
   - component: {fileID: 8510053064035777666}
-  - component: {fileID: 401285882067520376}
   - component: {fileID: 7625058946896211829}
   m_Layer: 0
   m_Name: Cylinder
@@ -287,20 +318,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!136 &401285882067520376
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5589392424978246368}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  m_Radius: 0.5000001
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0.000000059604645, y: 0, z: -0.00000008940697}
 --- !u!95 &7625058946896211829
 Animator:
   serializedVersion: 3
@@ -331,7 +348,6 @@ GameObject:
   - component: {fileID: 7093133162042468502}
   - component: {fileID: 7499193086817441047}
   - component: {fileID: 6186517407058804728}
-  - component: {fileID: 2812534789703492006}
   m_Layer: 0
   m_Name: Eyes
   m_TagString: Untagged
@@ -400,16 +416,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &2812534789703492006
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8040187565838796514}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

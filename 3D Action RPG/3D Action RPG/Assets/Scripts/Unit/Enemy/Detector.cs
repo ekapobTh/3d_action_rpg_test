@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class Detector : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Enemy m_Enemy;
+
+    private void OnTriggerEnter(Collider other)
     {
-        
+        if (other.tag.Equals(UnitTag.PLAYER))
+            m_Enemy.SetTarget(other.transform);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerExit(Collider other)
     {
-        
+        if (other.tag.Equals(UnitTag.PLAYER))
+            m_Enemy.SetTarget(null);
     }
 }
