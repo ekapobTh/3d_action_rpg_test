@@ -13,8 +13,8 @@ public static class LeftRightDetector
             returnValue = LRC.Left;
         else if (localPos.x > offset)
             returnValue = LRC.Right;
-        if(returnValue.Equals(LRC.Center) && isBehindCheck)
-            if(isOutOfOffset)
+        if (returnValue.Equals(LRC.Center) && isBehindCheck)
+            if (isOutOfOffset)
                 returnValue = LRC.Left;
 
         return returnValue;

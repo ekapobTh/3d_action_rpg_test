@@ -34,7 +34,7 @@ public class EnemyVisionDetector : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(!_isDetected)
+        if (!_isDetected)
             return;
         if (other.tag.Equals(UnitTag.PLAYER))
         {

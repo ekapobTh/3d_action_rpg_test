@@ -116,7 +116,7 @@ public class Enemy : UnitBehavior
                 }
         }
     }
-    
+
     private void StayInSafeArea()
     {
         if (_isOutOfSafeArea)

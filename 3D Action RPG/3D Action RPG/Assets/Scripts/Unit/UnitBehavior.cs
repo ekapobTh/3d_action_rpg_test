@@ -39,6 +39,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
 
     private float turnSpeed = 250f;
     private float moveSpeed = 10f;
+    private float parryAngleDot = 0.75f;
 
     protected float attackVision = 1.5f;
     protected bool isContinue = false;
@@ -88,7 +89,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
         m_Animator.SetTrigger(PARRY_TRIGGER);
         m_Animator.SetBool(PARRY, true);
     }
-   public void OnShowParry() =>  _isParry = true;
+    public void OnShowParry() => _isParry = true;
 
     public void UnParry()
     {
@@ -110,7 +111,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
         {
             var angleDot = Quaternion.Dot(transform.rotation, hitter.transform.rotation);
 
-            if(angleDot > 0.75f)
+            if (angleDot > parryAngleDot)
                 unitHP -= damage;
         }
         else
@@ -118,6 +119,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
         if (unitHP <= 0)
             Death();
     }
+
     public void ClearState()
     {
         _isParry = false;
