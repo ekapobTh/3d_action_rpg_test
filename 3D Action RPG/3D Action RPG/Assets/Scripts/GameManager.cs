@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] private UnitSpawner m_UnitSpawner;
+    [SerializeField] private UIController m_UIController;
 
     void Awake()
     {
@@ -28,4 +29,6 @@ public class GameManager : MonoBehaviour
         Cursor.visible = false;
         // cameraScript.SetTarget(); setup player & show start button
     }
+
+    public void SetUIHP(int hp) => m_UIController.GetHpBar().UpdateHP(hp);
 }

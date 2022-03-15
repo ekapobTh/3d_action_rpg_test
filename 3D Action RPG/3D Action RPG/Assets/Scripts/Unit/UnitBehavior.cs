@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class UnitBehavior : MonoBehaviour, IUnit
 {
@@ -30,6 +31,10 @@ public class UnitBehavior : MonoBehaviour, IUnit
     protected const int UNIT_MAX_HP = 100;
     protected const int UNIT_ATTACK_DAMAGE = 10;
     protected const float UNIT_ATTACK_COOLDOWN = 1f;
+    #endregion
+
+    #region Action
+    protected Action hurtAction;
     #endregion
 
     protected bool _isDamaged;
@@ -112,12 +117,18 @@ public class UnitBehavior : MonoBehaviour, IUnit
             var angleDot = Quaternion.Dot(transform.rotation, hitter.transform.rotation);
 
             if (angleDot > parryAngleDot)
-                unitHP -= damage;
+                doHurt();
         }
         else
-            unitHP -= damage;
+            doHurt();
         if (unitHP <= 0)
             Death();
+
+        void doHurt()
+        {
+            unitHP -= damage;
+            hurtAction?.Invoke();
+        }
     }
 
     public void ClearState()

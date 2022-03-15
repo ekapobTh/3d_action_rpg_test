@@ -18,6 +18,8 @@ public class ControllerInputHandler : MonoBehaviour
 
     private void UpdateInput()
     {
+        if (m_player.IsDeath())
+            return;
         Vector2 inputV = Vector2.zero;
         var inputX = Input.GetAxis("Horizontal");
         var inputY = Input.GetAxis("Vertical");
