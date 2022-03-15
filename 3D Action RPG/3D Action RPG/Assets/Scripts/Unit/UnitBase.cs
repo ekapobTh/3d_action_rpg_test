@@ -41,6 +41,7 @@ public class UnitBase : MonoBehaviour, IUnit
 
     private float turnSpeed = 250f;
     private float moveSpeed = 10f;
+    protected float attackVision = 1.5f;
 
     protected virtual void Awake()
     {

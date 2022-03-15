@@ -25,7 +25,6 @@ public class Detector : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        Debug.Log($"{_isDetected} {m_Enemy.isOutOfSafeArea}");
         if (_isDetected || m_Enemy.isOutOfSafeArea)
             return;
         if (other.tag.Equals(UnitTag.PLAYER))

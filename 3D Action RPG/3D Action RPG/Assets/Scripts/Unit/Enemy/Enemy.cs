@@ -50,44 +50,63 @@ public class Enemy : UnitBase
     private float stopTurnOffset = 1.5f;
     private void MoveToTarget()
     {
-        FaceToTarget(target);
-
-        Vector3 localPos = transform.InverseTransformPoint(target.transform.position);
-        if (localPos.x >= -walkVisionOffset && localPos.x <= walkVisionOffset)
-            SetInputVectorY(moveValue);
-        else
-            SetInputVectorY(0f);
-
-        // TODO if move out of spawn range back to original poistion
         if (IsOutOfAreaOffset())
         {
             _isOutOfSafeArea = true;
             SetInputVectorY(0f);
             SetTarget(null);
         }
+        else
+        {
+            var distance = Vector3.Distance(transform.position, target.position);
+
+            if (distance <= attackVision)
+            {
+                SetInputVectorY(0f);
+
+                var currentFaceing = FaceToTarget(target, 0.1f, false);
+
+                if(currentFaceing == LRC.Center)
+                {
+                    // TODO attack
+                }
+            }
+            else
+            {
+                FaceToTarget(target, stopTurnOffset);
+
+                Vector3 localPos = transform.InverseTransformPoint(target.transform.position);
+
+                if (localPos.x >= -walkVisionOffset && localPos.x <= walkVisionOffset)
+                    SetInputVectorY(moveValue);
+                else
+                    SetInputVectorY(0f);
+            }
+        }
+
     }
 
-    private void FaceToTarget(Transform target)
+    private LRC FaceToTarget(Transform target, float offset, bool isCheckBehind = true)
     {
-        var size = transform.GetTargetSide(target, stopTurnOffset);
+        var size = transform.GetTargetSide(target, offset, isCheckBehind);
 
         switch (size)
         {
             case LRC.Left:
                 {
                     SetInputVectorX(-turnValue);
+                    return LRC.Left;
                 }
-                break;
             case LRC.Right:
                 {
                     SetInputVectorX(turnValue);
+                    return LRC.Right;
                 }
-                break;
             default:
                 {
                     SetInputVectorX(0);
+                    return LRC.Center;
                 }
-                break;
         }
     }
     
@@ -106,7 +125,7 @@ public class Enemy : UnitBase
             }
             else
             {
-                FaceToTarget(startPosition);
+                FaceToTarget(startPosition, stopTurnOffset);
 
                 Vector3 localPos = transform.InverseTransformPoint(startPosition.position);
                 if (localPos.x >= -walkVisionOffset && localPos.x <= walkVisionOffset)

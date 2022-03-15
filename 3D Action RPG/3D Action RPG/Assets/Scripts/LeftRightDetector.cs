@@ -2,7 +2,7 @@
 
 public static class LeftRightDetector
 {
-    public static LRC GetTargetSide(this Transform _transform, Transform _target, float offset = 0f)
+    public static LRC GetTargetSide(this Transform _transform, Transform _target, float offset = 0f, bool isBehindCheck = true)
     {
         var returnValue = LRC.Center;
         Vector3 localPos = _transform.InverseTransformPoint(_target.position);
@@ -13,7 +13,7 @@ public static class LeftRightDetector
             returnValue = LRC.Left;
         else if (localPos.x > offset)
             returnValue = LRC.Right;
-        if(returnValue.Equals(LRC.Center))
+        if(returnValue.Equals(LRC.Center) && isBehindCheck)
             if(isOutOfOffset)
                 returnValue = LRC.Left;
 
