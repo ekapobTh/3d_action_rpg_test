@@ -4,14 +4,20 @@ public static class LeftRightDetector
 {
     public static LRC GetTargetSide(this Transform _transform, Transform _target, float offset = 0f)
     {
+        var returnValue = LRC.Center;
         Vector3 localPos = _transform.InverseTransformPoint(_target.position);
+        var angleSum = Mathf.Abs(_transform.rotation.eulerAngles.y - _target.rotation.eulerAngles.y);
+        var isOutOfOffset = (angleSum <= 30f) || (angleSum >= 320f);
 
         if (localPos.x < -offset)
-            return LRC.Left;
+            returnValue = LRC.Left;
         else if (localPos.x > offset)
-            return LRC.Right;
-        else
-            return LRC.Center;
+            returnValue = LRC.Right;
+        if(returnValue.Equals(LRC.Center))
+            if(isOutOfOffset)
+                returnValue = LRC.Left;
+
+        return returnValue;
     }
 }
 

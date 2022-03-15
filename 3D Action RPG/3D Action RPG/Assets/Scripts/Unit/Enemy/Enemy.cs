@@ -1,22 +1,25 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : UnitBase
 {
     private Transform target;
-    private Vector3 startPosition;
+    [SerializeField] private Transform startPosition;
 
     private float offsetRange = 10f;
     private bool _isOutOfSafeArea = false;
+    public bool isOutOfSafeArea => _isOutOfSafeArea;
 
     private float turnValue = 0.5f;
     private float moveValue = 0.25f;
 
+    public Action DetectorRefresh;
+
     protected override void Awake()
     {
         base.Awake();
-        startPosition = transform.localPosition;
     }
 
     // Update is called once per frame
@@ -31,7 +34,15 @@ public class Enemy : UnitBase
 
     public void SetTarget(Transform t)
     {
-        Debug.Log($"{name} : {(t != null ? t.name : "null")}");
+        //Debug.Log($"{name} : {(t != null ? t.name : "null")} ::: {_isOutOfSafeArea}");
+        if (t == null)
+        {
+            target = null;
+            SetInputVectorY(0f);
+            SetInputVectorX(0f);
+        }
+        if (_isOutOfSafeArea)
+            return;
         target = t;
     }
 
@@ -39,7 +50,7 @@ public class Enemy : UnitBase
     private float stopTurnOffset = 1.5f;
     private void MoveToTarget()
     {
-        FaceToTarget();
+        FaceToTarget(target);
 
         Vector3 localPos = transform.InverseTransformPoint(target.transform.position);
         if (localPos.x >= -walkVisionOffset && localPos.x <= walkVisionOffset)
@@ -50,14 +61,17 @@ public class Enemy : UnitBase
         // TODO if move out of spawn range back to original poistion
         if (IsOutOfAreaOffset())
         {
+            _isOutOfSafeArea = true;
             SetInputVectorY(0f);
             SetTarget(null);
         }
     }
 
-    private void FaceToTarget()
+    private void FaceToTarget(Transform target)
     {
-        switch (transform.GetTargetSide(target.transform, stopTurnOffset))
+        var size = transform.GetTargetSide(target, stopTurnOffset);
+
+        switch (size)
         {
             case LRC.Left:
                 {
@@ -79,17 +93,33 @@ public class Enemy : UnitBase
     
     private void StayInSafeArea()
     {
-        if (!_isOutOfSafeArea)
-            return;
-        // move to startPosition
-        // _isOutOfSafeArea = true; // after back to default path
+        if (_isOutOfSafeArea)
+        {
+            var distance = Vector3.Distance(transform.position, startPosition.position);
+
+            //Debug.Log($"StayInSafeArea {distance}");
+            if (distance < 1.5f)
+            {
+                SetInputVectorY(0f);
+                _isOutOfSafeArea = false;
+                DetectorRefresh?.Invoke();
+            }
+            else
+            {
+                FaceToTarget(startPosition);
+
+                Vector3 localPos = transform.InverseTransformPoint(startPosition.position);
+                if (localPos.x >= -walkVisionOffset && localPos.x <= walkVisionOffset)
+                    SetInputVectorY(moveValue);
+                else
+                    SetInputVectorY(0f);
+            }
+        }
+        else
+        {
+            // move around place
+        }
     }
 
-    private bool IsOutOfAreaOffset()
-    {
-        var sumPosition = transform.localPosition - startPosition;
-        var sumPositionResult = Mathf.Abs(sumPosition.x) + Mathf.Abs(sumPosition.z);
-
-        return sumPositionResult > offsetRange;
-    }
+    private bool IsOutOfAreaOffset() => Vector3.Distance(transform.position, startPosition.position) > offsetRange;
 }
