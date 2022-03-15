@@ -3,24 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : UnitBase
+public class Player : UnitBehavior
 {
-
     protected override void Awake()
     {
         base.Awake();
         CameraController.Instance.SetTarget(transform);
         isContinue = true;
-    }
-
-    public void OnShowParry()
-    {
-        isParry = true;
-    }
-
-    public void ClearState()
-    {
-        isParry = false;
     }
 
     private void OnTriggerEnter(Collider other)

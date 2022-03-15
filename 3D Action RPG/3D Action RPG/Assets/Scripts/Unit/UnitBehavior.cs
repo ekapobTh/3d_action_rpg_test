@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitBase : MonoBehaviour, IUnit
+public class UnitBehavior : MonoBehaviour, IUnit
 {
     #region Unit Data
     protected int unitHP;
@@ -45,6 +45,7 @@ public class UnitBase : MonoBehaviour, IUnit
 
     protected float attackVision = 1.5f;
     protected bool isContinue = false;
+    protected UnitBehavior targetBehavior;
 
     private float attackCooldown = 0f;
 
@@ -65,6 +66,7 @@ public class UnitBase : MonoBehaviour, IUnit
             attackCooldown -= Time.deltaTime;
     }
 
+    #region Animation
     public void Attack()
     {
         if (isUnableToAction(isParry) || attackCooldown > 0f)
@@ -86,6 +88,7 @@ public class UnitBase : MonoBehaviour, IUnit
         m_Animator.SetTrigger(PARRY_TRIGGER);
         m_Animator.SetBool(PARRY, true);
     }
+   public void OnShowParry() =>  isParry = true;
 
     public void UnParry()
     {
@@ -98,18 +101,31 @@ public class UnitBase : MonoBehaviour, IUnit
         isDeath = true;
     }
 
-    public void Hurt()
+    public void Hurt(int damage)
     {
         if (isUnableToAction())
             return;
+        // parry check
         if (unitHP < 0)
             Death();
+    }
+    public void ClearState()
+    {
+        isParry = false;
     }
 
     public void MoveUpdate()
     {
         m_Animator.SetFloat(MOVE, moveInput);
     }
+
+    public void Attacked()
+    {
+        if (targetBehavior == null)
+            return;
+        targetBehavior.Hurt(unitATK);
+    }
+    #endregion 
 
     protected virtual bool isUnableToAction(bool elseCondition = false) => isDamaged || isDeath || elseCondition;
 
@@ -124,7 +140,6 @@ public class UnitBase : MonoBehaviour, IUnit
         moveInput = inputY;
         MoveUpdate();
     }
-
 
     private void Rotate()
     {

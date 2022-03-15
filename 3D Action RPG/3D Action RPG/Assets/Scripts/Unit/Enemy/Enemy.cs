@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : UnitBase
+public class Enemy : UnitBehavior
 {
     private Transform target;
     [SerializeField] private Transform startPosition;

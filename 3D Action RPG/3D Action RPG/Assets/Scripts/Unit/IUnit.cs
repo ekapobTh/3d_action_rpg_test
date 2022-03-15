@@ -1,6 +1,6 @@
 ﻿public interface IUnit
 {
     void Attack();
-    void Hurt();
+    void Hurt(int damage);
     void Death();
 }
