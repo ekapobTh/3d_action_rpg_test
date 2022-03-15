@@ -10,6 +10,7 @@ public class Player : UnitBase
     {
         base.Awake();
         CameraController.Instance.SetTarget(transform);
+        isContinue = true;
     }
 
     public void OnShowParry()

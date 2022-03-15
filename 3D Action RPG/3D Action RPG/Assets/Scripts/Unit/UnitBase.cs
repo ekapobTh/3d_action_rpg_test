@@ -32,6 +32,7 @@ public class UnitBase : MonoBehaviour, IUnit
     #region Constant
     protected const int UNIT_MAX_HP = 100;
     protected const int UNIT_ATTACK_DAMAGE = 10;
+    protected const float UNIT_ATTACK_COOLDOWN = 1f;
     #endregion
 
     protected bool isDamaged;
@@ -41,7 +42,11 @@ public class UnitBase : MonoBehaviour, IUnit
 
     private float turnSpeed = 250f;
     private float moveSpeed = 10f;
+
     protected float attackVision = 1.5f;
+    protected bool isContinue = false;
+
+    private float attackCooldown = 0f;
 
     protected virtual void Awake()
     {
@@ -54,13 +59,19 @@ public class UnitBase : MonoBehaviour, IUnit
         unitATK = UNIT_ATTACK_DAMAGE;
     }
 
+    protected virtual void Update()
+    {
+        if (attackCooldown > 0f)
+            attackCooldown -= Time.deltaTime;
+    }
+
     public void Attack()
     {
-        if (isUnableToAction(isParry))
+        if (isUnableToAction(isParry) || attackCooldown > 0f)
             return;
+        attackCooldown = UNIT_ATTACK_COOLDOWN;
         m_Animator.SetTrigger(ATTACK_TRIGGER);
-        m_Animator.SetBool(ATTACK, true);
-        // TODO attack cooldown 1 sec
+        m_Animator.SetBool(ATTACK, isContinue);
     }
 
     public void UnAttack()
@@ -91,7 +102,8 @@ public class UnitBase : MonoBehaviour, IUnit
     {
         if (isUnableToAction())
             return;
-        throw new NotImplementedException();
+        if (unitHP < 0)
+            Death();
     }
 
     public void MoveUpdate()
@@ -131,6 +143,4 @@ public class UnitBase : MonoBehaviour, IUnit
 
         Movement();
     }
-
-
 }

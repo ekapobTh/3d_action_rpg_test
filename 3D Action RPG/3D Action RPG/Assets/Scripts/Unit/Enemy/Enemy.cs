@@ -23,8 +23,9 @@ public class Enemy : UnitBase
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
+        base.Update();
         // Set X and Y to move
         if (target != null)
             MoveToTarget();
@@ -64,12 +65,10 @@ public class Enemy : UnitBase
             {
                 SetInputVectorY(0f);
 
-                var currentFaceing = FaceToTarget(target, 0.1f, false);
+                var currentFaceing = FaceToTarget(target, 0.05f, false);
 
                 if(currentFaceing == LRC.Center)
-                {
-                    // TODO attack
-                }
+                    Attack();
             }
             else
             {
