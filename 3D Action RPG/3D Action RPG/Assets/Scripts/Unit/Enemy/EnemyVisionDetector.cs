@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class Detector : MonoBehaviour
+public class EnemyVisionDetector : MonoBehaviour
 {
     [SerializeField] private Enemy m_Enemy;
     private bool _isDetected = false;

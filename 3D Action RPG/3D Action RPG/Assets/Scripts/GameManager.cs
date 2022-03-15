@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
@@ -29,11 +27,5 @@ public class GameManager : MonoBehaviour
 
         Cursor.visible = false;
         // cameraScript.SetTarget(); setup player & show start button
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

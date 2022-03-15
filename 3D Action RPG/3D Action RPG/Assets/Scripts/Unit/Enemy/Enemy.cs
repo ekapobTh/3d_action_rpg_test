@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : UnitBehavior
 {
-    private Transform target;
+    private UnitBehavior target;
     [SerializeField] private Transform startPosition;
 
     private float offsetRange = 10f;
@@ -25,6 +23,8 @@ public class Enemy : UnitBehavior
     // Update is called once per frame
     protected override void Update()
     {
+        if (IsDeath())
+            return;
         base.Update();
         // Set X and Y to move
         if (target != null)
@@ -44,7 +44,7 @@ public class Enemy : UnitBehavior
         }
         if (_isOutOfSafeArea)
             return;
-        target = t;
+        target = t.GetComponent<UnitBehavior>();
     }
 
     private float walkVisionOffset = 2.5f;
@@ -52,27 +52,28 @@ public class Enemy : UnitBehavior
     private void MoveToTarget()
     {
         if (IsOutOfAreaOffset())
-        {
-            _isOutOfSafeArea = true;
-            SetInputVectorY(0f);
-            SetTarget(null);
-        }
+            SetupForBack();
         else
         {
-            var distance = Vector3.Distance(transform.position, target.position);
+            var distance = Vector3.Distance(transform.position, target.transform.position);
 
             if (distance <= attackVision)
             {
                 SetInputVectorY(0f);
 
-                var currentFaceing = FaceToTarget(target, 0.05f, false);
+                var currentFaceing = FaceToTarget(target.transform, 0.05f, false);
 
-                if(currentFaceing == LRC.Center)
-                    Attack();
+                if (currentFaceing == LRC.Center)
+                {
+                    if (!target.IsDeath())
+                        Attack();
+                    else
+                        SetupForBack();
+                }
             }
             else
             {
-                FaceToTarget(target, stopTurnOffset);
+                FaceToTarget(target.transform, stopTurnOffset);
 
                 Vector3 localPos = transform.InverseTransformPoint(target.transform.position);
 
@@ -83,6 +84,13 @@ public class Enemy : UnitBehavior
             }
         }
 
+
+        void SetupForBack()
+        {
+            _isOutOfSafeArea = true;
+            SetInputVectorY(0f);
+            SetTarget(null);
+        }
     }
 
     private LRC FaceToTarget(Transform target, float offset, bool isCheckBehind = true)

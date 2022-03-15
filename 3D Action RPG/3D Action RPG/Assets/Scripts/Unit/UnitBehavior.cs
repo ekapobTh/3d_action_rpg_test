@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class UnitBehavior : MonoBehaviour, IUnit
 {
@@ -21,7 +18,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
     protected const string ATTACK_TRIGGER = "Attack";
     protected const string PARRY_TRIGGER = "Parry";
     protected const string DAMAGE_TRIGGER = "Damage";
-    protected const string DEATH_TRIGGER = "Damage";
+    protected const string DEATH_TRIGGER = "Death";
 
     protected const string ATTACK = "isAttack";
     protected const string PARRY = "isParry";
@@ -35,10 +32,10 @@ public class UnitBehavior : MonoBehaviour, IUnit
     protected const float UNIT_ATTACK_COOLDOWN = 1f;
     #endregion
 
-    protected bool isDamaged;
-    protected bool isParry;
-    protected bool isAttack;
-    protected bool isDeath;
+    protected bool _isDamaged;
+    protected bool _isParry;
+    protected bool _isAttack;
+    protected bool _isDeath;
 
     private float turnSpeed = 250f;
     private float moveSpeed = 10f;
@@ -47,14 +44,17 @@ public class UnitBehavior : MonoBehaviour, IUnit
     protected bool isContinue = false;
     protected UnitBehavior targetBehavior;
 
+    public void SetAttackTarget(UnitBehavior unitTarget) => targetBehavior = unitTarget;
+    public bool IsDeath() => _isDeath;
+
     private float attackCooldown = 0f;
 
     protected virtual void Awake()
     {
-        isDamaged = false;
-        isParry = false;
-        isAttack = false;
-        isDeath = false;
+        _isDamaged = false;
+        _isParry = false;
+        _isAttack = false;
+        _isDeath = false;
 
         unitHP = UNIT_MAX_HP;
         unitATK = UNIT_ATTACK_DAMAGE;
@@ -69,7 +69,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
     #region Animation
     public void Attack()
     {
-        if (isUnableToAction(isParry) || attackCooldown > 0f)
+        if (isUnableToAction(_isParry) || attackCooldown > 0f)
             return;
         attackCooldown = UNIT_ATTACK_COOLDOWN;
         m_Animator.SetTrigger(ATTACK_TRIGGER);
@@ -83,12 +83,12 @@ public class UnitBehavior : MonoBehaviour, IUnit
 
     public void Parry()
     {
-        if (isUnableToAction(isAttack))
+        if (isUnableToAction(_isAttack))
             return;
         m_Animator.SetTrigger(PARRY_TRIGGER);
         m_Animator.SetBool(PARRY, true);
     }
-   public void OnShowParry() =>  isParry = true;
+   public void OnShowParry() =>  _isParry = true;
 
     public void UnParry()
     {
@@ -98,20 +98,29 @@ public class UnitBehavior : MonoBehaviour, IUnit
     public void Death()
     {
         m_Animator.SetTrigger(DEATH_TRIGGER);
-        isDeath = true;
+        _isDeath = true;
+        DeathSet();
     }
 
-    public void Hurt(int damage)
+    public void Hurt(int damage, UnitBehavior hitter)
     {
         if (isUnableToAction())
             return;
-        // parry check
-        if (unitHP < 0)
+        if (_isParry)
+        {
+            var angleDot = Quaternion.Dot(transform.rotation, hitter.transform.rotation);
+
+            if(angleDot > 0.75f)
+                unitHP -= damage;
+        }
+        else
+            unitHP -= damage;
+        if (unitHP <= 0)
             Death();
     }
     public void ClearState()
     {
-        isParry = false;
+        _isParry = false;
     }
 
     public void MoveUpdate()
@@ -123,11 +132,11 @@ public class UnitBehavior : MonoBehaviour, IUnit
     {
         if (targetBehavior == null)
             return;
-        targetBehavior.Hurt(unitATK);
+        targetBehavior.Hurt(unitATK, this);
     }
     #endregion 
 
-    protected virtual bool isUnableToAction(bool elseCondition = false) => isDamaged || isDeath || elseCondition;
+    protected virtual bool isUnableToAction(bool elseCondition = false) => _isDamaged || _isDeath || elseCondition;
 
     public void SetInputVector(Vector2 inputV)
     {
@@ -157,5 +166,10 @@ public class UnitBehavior : MonoBehaviour, IUnit
         Rotate();
 
         Movement();
+    }
+
+    private void DeathSet()
+    {
+        tag = UnitTag.UNTAGGED;
     }
 }
