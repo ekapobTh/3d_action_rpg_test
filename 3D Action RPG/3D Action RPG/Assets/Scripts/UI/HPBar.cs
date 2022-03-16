@@ -20,6 +20,13 @@ public class HPBar : MonoBehaviour
         t = 0f;
     }
 
+    public void ForceUpdateHP(int hp)
+    {
+        fillGameObject.SetActive(true);
+        m_Slider.value = ((float)hp) / 100f;
+        m_Text.text = (m_Slider.value * 100f).ToString("F0");
+    }
+
     private void Update()
     {
         if (!isUpdate)

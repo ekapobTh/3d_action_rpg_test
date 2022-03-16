@@ -33,4 +33,11 @@ public class GameManager : MonoBehaviour
         m_UnitSpawner.SpawnUnit(enemy, UnitSpawner.UnitType.Enemy);
         _isPlay = true;
     }
+    
+    public void GameEnd()
+    {
+        _isPlay = false;
+        Cursor.visible = true;
+        UIController.Instance.ShowEndMenu();
+    }
 }

@@ -5,15 +5,10 @@
         base.Awake();
         CameraController.Instance.SetTarget(transform);
         isContinue = true;
+        UIController.Instance.GetHpBar().ForceUpdateHP(unitHP);
         PlayerUpdateHP();
         hurtAction = PlayerUpdateHP;
-        deathAction = OnDeath;
     }
 
     void PlayerUpdateHP() => UIController.Instance.GetHpBar().UpdateHP(unitHP);
-
-    void OnDeath()
-    {
-        // TODO show menu
-    }
 }

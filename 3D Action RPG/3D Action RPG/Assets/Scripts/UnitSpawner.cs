@@ -28,6 +28,7 @@ public class UnitSpawner : MonoBehaviour
                 }
                 break;
         }
+        spawnList.Add(unitSpawn);
     }
 
     public void ClearUnit()

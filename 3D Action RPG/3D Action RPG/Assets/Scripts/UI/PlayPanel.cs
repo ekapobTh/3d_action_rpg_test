@@ -16,6 +16,7 @@ public class PlayPanel : MonoBehaviour
 
     private void OnClickReplay()
     {
+        Time.timeScale = 1f;
         UIController.Instance.SetActiveBackground(false);
         gameObject.SetActive(false);
         GameManager.Instance.GameSetup();

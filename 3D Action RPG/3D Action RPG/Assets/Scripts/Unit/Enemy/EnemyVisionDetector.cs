@@ -12,6 +12,8 @@ public class EnemyVisionDetector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (m_Enemy.IsDeath())
+            return;
         if (_isDetected || m_Enemy.isOutOfSafeArea)
             return;
         if (other.tag.Equals(UnitTag.PLAYER))
@@ -23,6 +25,8 @@ public class EnemyVisionDetector : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
+        if (m_Enemy.IsDeath())
+            return;
         if (_isDetected || m_Enemy.isOutOfSafeArea)
             return;
         if (other.tag.Equals(UnitTag.PLAYER))
@@ -34,6 +38,8 @@ public class EnemyVisionDetector : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (m_Enemy.IsDeath())
+            return;
         if (!_isDetected)
             return;
         if (other.tag.Equals(UnitTag.PLAYER))

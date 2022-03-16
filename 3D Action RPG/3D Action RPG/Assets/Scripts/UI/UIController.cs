@@ -29,10 +29,11 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKey(KeyCode.Escape) && GameManager.Instance.isPlay)
+        if (Input.GetKeyDown(KeyCode.Escape) && GameManager.Instance.isPlay)
         {
             var isActive = !playPanel.gameObject.activeSelf;
 
+            Time.timeScale = !isActive ? 1f : 0f;
             Cursor.visible = isActive;
             SetActiveBackground(isActive);
             playPanel.gameObject.SetActive(isActive);
@@ -40,4 +41,9 @@ public class UIController : MonoBehaviour
     }
 
     public void SetActiveBackground(bool isShow) => baseBackground.SetActive(isShow);
+
+    public void ShowEndMenu()
+    {
+        playPanel.gameObject.SetActive(true);
+    }
 }

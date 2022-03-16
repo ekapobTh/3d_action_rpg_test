@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class UnitBehavior : MonoBehaviour, IUnit
@@ -31,11 +32,12 @@ public class UnitBehavior : MonoBehaviour, IUnit
     protected const int UNIT_MAX_HP = 100;
     protected const int UNIT_ATTACK_DAMAGE = 10;
     protected const float UNIT_ATTACK_COOLDOWN = 1f;
+
+    protected const float ENDGAME_DELAY = 3f;
     #endregion
 
     #region Action
     protected Action hurtAction;
-    protected Action deathAction;
     #endregion
 
     protected bool _isDamaged;
@@ -106,7 +108,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
     {
         m_Animator.SetTrigger(DEATH_TRIGGER);
         _isDeath = true;
-        DeathSet();
+        StartCoroutine(DeathSet());
     }
 
     public void Hurt(int damage, UnitBehavior hitter)
@@ -182,9 +184,12 @@ public class UnitBehavior : MonoBehaviour, IUnit
         Movement();
     }
 
-    private void DeathSet()
+    private IEnumerator DeathSet()
     {
         tag = UnitTag.UNTAGGED;
-        deathAction?.Invoke();
+
+        yield return new WaitForSeconds(ENDGAME_DELAY);
+
+        GameManager.Instance.GameEnd();
     }
 }
