@@ -35,6 +35,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
 
     #region Action
     protected Action hurtAction;
+    protected Action deathAction;
     #endregion
 
     protected bool _isDamaged;
@@ -184,5 +185,6 @@ public class UnitBehavior : MonoBehaviour, IUnit
     private void DeathSet()
     {
         tag = UnitTag.UNTAGGED;
+        deathAction?.Invoke();
     }
 }

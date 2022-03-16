@@ -7,7 +7,13 @@
         isContinue = true;
         PlayerUpdateHP();
         hurtAction = PlayerUpdateHP;
+        deathAction = OnDeath;
     }
 
-    void PlayerUpdateHP() => GameManager.Instance.SetUIHP(unitHP);
+    void PlayerUpdateHP() => UIController.Instance.GetHpBar().UpdateHP(unitHP);
+
+    void OnDeath()
+    {
+        // TODO show menu
+    }
 }

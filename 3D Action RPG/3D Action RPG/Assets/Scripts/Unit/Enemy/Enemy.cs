@@ -15,6 +15,8 @@ public class Enemy : UnitBehavior
 
     public Action DetectorRefresh;
 
+    public void SetStartTransform(Transform t) => startPosition = t;
+
     protected override void Awake()
     {
         base.Awake();

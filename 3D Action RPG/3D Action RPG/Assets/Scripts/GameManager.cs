@@ -14,21 +14,23 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] private UnitSpawner m_UnitSpawner;
-    [SerializeField] private UIController m_UIController;
+
+    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject enemy;
+
+    private bool _isPlay = false;
+    public bool isPlay => _isPlay;
 
     void Awake()
     {
         _instance = this;
     }
 
-    // Start is called before the first frame update
-    private void Start()
+    public void GameSetup()
     {
-        var cameraScript = Camera.main.GetComponent<CameraController>();
-
-        Cursor.visible = false;
-        // cameraScript.SetTarget(); setup player & show start button
+        m_UnitSpawner.ClearUnit();
+        m_UnitSpawner.SpawnUnit(player, UnitSpawner.UnitType.Player);
+        m_UnitSpawner.SpawnUnit(enemy, UnitSpawner.UnitType.Enemy);
+        _isPlay = true;
     }
-
-    public void SetUIHP(int hp) => m_UIController.GetHpBar().UpdateHP(hp);
 }
