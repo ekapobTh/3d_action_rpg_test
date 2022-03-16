@@ -34,6 +34,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
     protected const float UNIT_ATTACK_COOLDOWN = 1f;
 
     protected const float ENDGAME_DELAY = 3f;
+    protected const float PARRY_DURATION = 0.5f;
     #endregion
 
     #region Action
@@ -97,7 +98,19 @@ public class UnitBehavior : MonoBehaviour, IUnit
         m_Animator.SetTrigger(PARRY_TRIGGER);
         m_Animator.SetBool(PARRY, true);
     }
-    public void OnShowParry() => _isParry = true;
+    public void OnShowParry()
+    {
+        StartCoroutine(ParryDuration());
+
+        IEnumerator ParryDuration()
+        {
+            _isParry = true;
+
+            yield return new WaitForSeconds(PARRY_DURATION);
+
+            _isParry = false;
+        }
+    }
 
     public void UnParry()
     {
@@ -106,6 +119,7 @@ public class UnitBehavior : MonoBehaviour, IUnit
 
     public void Death()
     {
+        SetInputVector(Vector2.zero);
         m_Animator.SetTrigger(DEATH_TRIGGER);
         _isDeath = true;
         StartCoroutine(DeathSet());

@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
@@ -18,7 +17,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private Transform _target;
 
     [SerializeField] private float _mouseSensitivity = 3f;
-    public bool isReverse;
+    private bool isReverseX;
+    private bool isReverseY;
 
     private float _rotationY;
     private float _rotationX;
@@ -31,6 +31,15 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float _smoothTime = 0.2f;
 
     [SerializeField] private Vector2 _rotationMinMax = new Vector2(-40f, 40f);
+
+    [SerializeField] private Toggle hToggle;
+    [SerializeField] private Toggle vToggle;
+
+    private void Awake()
+    {
+        hToggle.onValueChanged.AddListener(ReverseHorizonMove);
+        hToggle.onValueChanged.AddListener(ReverseVerticalMove);
+    }
 
     // Update is called once per frame
     void Update()
@@ -51,11 +60,14 @@ public class CameraController : MonoBehaviour
 
         _rotationX = Mathf.Clamp(_rotationX, _rotationMinMax.x, _rotationMinMax.y);
 
-        Vector3 nextRotation = new Vector3(_rotationX * (isReverse ? -1 : 1), _rotationY * (isReverse ? -1 : 1));
+        Vector3 nextRotation = new Vector3(_rotationX * (isReverseX ? -1 : 1), _rotationY * (isReverseY ? 1 : -1));
 
         _currentRotation = Vector3.SmoothDamp(_currentRotation, nextRotation, ref _smoothVelocity, _smoothTime);
         transform.eulerAngles = _currentRotation;
 
         transform.position = _target.position - transform.forward * _distanceFromTarget;
     }
+
+    public void ReverseHorizonMove(bool isReverse) => isReverseX = isReverse;
+    public void ReverseVerticalMove(bool isReverse) => isReverseY = isReverse;
 }

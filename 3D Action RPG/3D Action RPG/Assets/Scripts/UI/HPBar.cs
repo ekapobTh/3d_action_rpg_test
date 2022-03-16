@@ -27,7 +27,7 @@ public class HPBar : MonoBehaviour
         m_Text.text = (m_Slider.value * 100f).ToString("F0");
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (!isUpdate)
             return;

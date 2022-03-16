@@ -5,6 +5,7 @@ public class Enemy : UnitBehavior
 {
     private UnitBehavior target;
     [SerializeField] private Transform startPosition;
+    [SerializeField] private EnemyHPBar m_EnemyHPBar;
 
     private float offsetRange = 10f;
     private bool _isOutOfSafeArea = false;
@@ -20,6 +21,8 @@ public class Enemy : UnitBehavior
     protected override void Awake()
     {
         base.Awake();
+        m_EnemyHPBar.ForceUpdateHP(unitHP);
+        hurtAction = EnemyUpdateHP;
     }
 
     // Update is called once per frame
@@ -35,6 +38,8 @@ public class Enemy : UnitBehavior
             StayInSafeArea();
     }
 
+    void EnemyUpdateHP() => m_EnemyHPBar.UpdateHP(unitHP);
+
     public void SetTarget(Transform t)
     {
         //Debug.Log($"{name} : {(t != null ? t.name : "null")} ::: {_isOutOfSafeArea}");
@@ -43,6 +48,7 @@ public class Enemy : UnitBehavior
             target = null;
             SetInputVectorY(0f);
             SetInputVectorX(0f);
+            return;
         }
         if (_isOutOfSafeArea)
             return;

@@ -6,7 +6,6 @@
         CameraController.Instance.SetTarget(transform);
         isContinue = true;
         UIController.Instance.GetHpBar().ForceUpdateHP(unitHP);
-        PlayerUpdateHP();
         hurtAction = PlayerUpdateHP;
     }
 
